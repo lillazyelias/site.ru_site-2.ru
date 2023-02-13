@@ -1,38 +1,40 @@
 Role Name
 =========
-
-A brief description of the role goes here.
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Site.ru_Site-2.ru
 
 Role Variables
 --------------
+# Dirs
+site1_dir: "/var/www/{{ site1_domain }}"
+site1_log: "{{ site1_dir }}/log"
+site1_tmp: "{{ site1_dir }}/tmp"
+site1_session: "{{ site1_dir }}/session"
+site2_dir: "/var/www/{{ site2_domain }}"
+site2_log: "{{ site2_dir }}/log"
+site2_tmp: "{{ site2_dir }}/tmp"
+site2_session: "{{ site2_dir }}/session"
+wp_dir: "{{ site1_dir }}"
+apache_dir: /etc/apache2
+nginx_dir: /etc/nginx
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+# Domains
+site1_domain: site.ru
+site2_domain: site-2.ru
 
-Dependencies
-------------
+php_upload_max_filesize: 64M
+php_version: 7.4
+php_session_lifetime: 86400
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+mysql_db_name: wordpress
+mysql_db_user: wordpress
+mysql_db_password: password
+mysql_root_password: root
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+- hosts: all
+  roles:
+    - site
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
