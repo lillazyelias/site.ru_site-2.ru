@@ -1,0 +1,28 @@
+---
+- name: Install MySQL
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: 
+   - mysql-server
+   - python3-pymysql
+
+- name: Set root password
+  mysql_user:
+    login_host: "localhost"                       #
+    login_user: "root"                            # При повторном запуске роли
+    login_password: "{{ mysql_root_password }}"   # 
+    name: 'root'
+    password: "{{ mysql_root_password }}"
+    state: present
+  become: true
+
+- name: Copy my.cnf to server
+  template:
+    src: mysql.cnf.j2
+    dest: /etc/mysql/my.cnf
+  become: true
+  notify: 
+   - restart mysql
+
+

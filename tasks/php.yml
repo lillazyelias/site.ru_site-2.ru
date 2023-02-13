@@ -1,0 +1,30 @@
+---
+- name: Install PHP
+  apt:
+    name: php
+    state: present
+
+- name: Install PHP extensions
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "php{{ php_version }}-cli"
+    - "php{{ php_version }}-fpm"
+    - "php{{ php_version }}-mysql"
+    - "php{{ php_version }}-curl"
+    - "php{{ php_version }}-xml"
+
+- name: Configure PHP
+  lineinfile:
+    path: /etc/php/{{ php_version }}/fpm/php.ini
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^session.gc_maxlifetime', line: 'session.gc_maxlifetime = {{ php_session_lifetime }}' }
+    - { regexp: '^session.gc_probability', line: 'session.gc_probability = 1' }
+    - { regexp: '^session.gc_divisor', line: 'session.gc_divisor = 10' }
+    - { regexp: '^upload_max_filesize', line: 'upload_max_filesize = {{ php_upload_max_filesize }}' }
+    - { regexp: '^post_max_size', line: 'post_max_size = {{ php_upload_max_filesize }}' }
+
+

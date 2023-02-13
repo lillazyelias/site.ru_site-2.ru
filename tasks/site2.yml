@@ -1,0 +1,24 @@
+---
+- name: Install phpFileManager
+  unarchive:
+    src: https://downloads.sourceforge.net/project/phpfm/phpFileManager/phpFileManager-1.7.9/phpFileManager-1.7.9.zip
+    dest: /var/www
+    remote_src: yes
+    creates: /var/www/phpFileManager
+
+- name: Copy phpFileManager to site2 directory
+  command: cp -r /var/www/phpFileManager* /var/www/{{ site2_domain }}/
+
+- name: Copy nginx conf
+  template:
+    src: nginx-site2.conf.j2
+    dest: "{{ nginx_dir }}/sites-enabled/{{ site2_domain }}.conf"
+  notify: 
+   - restart nginx
+
+- name: Copy apache conf
+  template:
+    src: apache-site2.conf.j2
+    dest: "{{ apache_dir }}/sites-enabled/{{ site2_domain }}.conf"
+  notify: 
+   - restart apache

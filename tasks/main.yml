@@ -1,0 +1,21 @@
+---
+- name: Create directories
+  import_tasks: preflight.yml
+
+- name: Install and Configure Nginx
+  import_tasks: nginx.yml
+
+- name: Install and Configure Apache
+  import_tasks: apache.yml
+
+- name: Install and Configure PHP
+  import_tasks: php.yml
+
+- name: Install and Configure MySql
+  import_tasks: mysql.yml
+
+- name: Add Site1 and Configure
+  import_tasks: site.yml
+
+- name: Add Site2 and Configure
+  import_tasks: site2.yml

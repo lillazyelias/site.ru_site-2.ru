@@ -1,0 +1,12 @@
+<VirtualHost *:81>
+    ServerName {{ site2_domain }}
+    DocumentRoot {{ site2_dir }}
+    <Directory {{ site2_dir }}>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/run/php/php7.4-fpm.sock|fcgi://localhost/"
+    </FilesMatch>
+</VirtualHost>

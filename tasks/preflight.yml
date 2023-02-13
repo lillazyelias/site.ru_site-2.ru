@@ -1,0 +1,33 @@
+---
+- name: Create directories for site1
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: 0755
+    owner: www-data
+    group: www-data
+  with_items:
+    - "{{ site1_dir }}"
+    - "{{ site1_log }}"
+    - "{{ site1_tmp }}"
+    - "{{ site1_session }}"
+
+- name: Create site2 user
+  user:
+    name: "{{ site2_domain }}"
+    comment: "site2 user"
+    shell: /bin/bash
+    create_home: no
+
+- name: Create directories for site2
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: 0755
+    owner: "{{ site2_domain }}"
+    group: "{{ site2_domain }}"
+  with_items:
+    - "{{ site2_dir }}"
+    - "{{ site2_log }}"
+    - "{{ site2_tmp }}"
+    - "{{ site2_session }}"

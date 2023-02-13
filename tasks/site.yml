@@ -1,0 +1,45 @@
+---
+- name: Download and extract WordPress
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: "{{ wp_dir }}"
+    copy: no
+
+- name: Set rights of WordPress files
+  file:
+    path: "{{ wp_dir }}"
+    mode: 644
+    owner: www-data
+    group: www-data
+
+- name: Create MySQL database and user
+  mysql_db:
+    name: "{{ mysql_db_name }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Create MySQL user
+  mysql_user:
+    name: "{{ mysql_db_user }}"
+    password: "{{ mysql_db_password }}"
+    priv: "{{ mysql_db_name }}.*:ALL"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Copy nginx conf
+  template:
+    src: nginx-site1.conf.j2
+    dest: "{{ nginx_dir }}/sites-enabled/{{ site1_domain }}.conf"
+  notify: 
+   - restart nginx
+
+- name: Copy apache conf
+  template:
+    src: apache-site1.conf.j2
+    dest: "{{ apache_dir }}/sites-enabled/{{ site1_domain }}.conf"
+  notify: 
+   - restart apache
+
