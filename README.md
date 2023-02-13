@@ -1,39 +1,19 @@
 Role Name
 =========
-Site.ru_Site-2.ru
+site
 
 Role Variables
 --------------
-# Dirs
-site1_dir: "/var/www/{{ site1_domain }}"
-site1_log: "{{ site1_dir }}/log"
-site1_tmp: "{{ site1_dir }}/tmp"
-site1_session: "{{ site1_dir }}/session"
-site2_dir: "/var/www/{{ site2_domain }}"
-site2_log: "{{ site2_dir }}/log"
-site2_tmp: "{{ site2_dir }}/tmp"
-site2_session: "{{ site2_dir }}/session"
-wp_dir: "{{ site1_dir }}"
-apache_dir: /etc/apache2
-nginx_dir: /etc/nginx
+| Name           | Default Value |
+| -------------- | ------------- |
+| `site1_domain:` | site.ru|
+| `site2_domain:`| site-2.ru |
 
-# Domains
-site1_domain: site.ru
-site2_domain: site-2.ru
+### Playbook
 
-php_upload_max_filesize: 64M
-php_version: 7.4
-php_session_lifetime: 86400
-
-mysql_db_name: wordpress
-mysql_db_user: wordpress
-mysql_db_password: password
-mysql_root_password: root
-
-
-Example Playbook
-----------------
-
+Пример плейбука для запуска роли:
+```yaml
+---
 - hosts: all
   roles:
     - site
